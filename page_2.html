@@ -1,24 +1,24 @@
 <!DOCTYPE HTML>
-  <html lang="en">
+<html lang="en">
 <head>
     <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NPZ9PM89');</script>
-  <!-- End Google Tag Manager -->
-  
-    <Meta charset="UTF-8">
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NPZ9PM89');</script>
+    <!-- End Google Tag Manager -->
+    
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Call me!</title>
-  <script>
-  // Function to extract query parameters from the URL
+    <title>Call me!</title>
+    
+    <script>
+        // Function to extract query parameters from the URL
         function getQueryParams() {
             let params = new URLSearchParams(window.location.search);
             let queryParams = {};
 
-            // Store all key/value pairs in an object
             params.forEach((value, key) => {
                 queryParams[key] = value;
             });
@@ -31,8 +31,7 @@
             let queryParams = getQueryParams();
             let displayArea = document.getElementById("queryParamsDisplay");
 
-            // Clear previous content
-            displayArea.innerHTML = "";
+            displayArea.innerHTML = ""; // Clear previous content
 
             if (Object.keys(queryParams).length > 0) {
                 Object.entries(queryParams).forEach(([key, value]) => {
@@ -45,38 +44,57 @@
             }
         }
 
-  function sendToGTM() {
+        // Function to manually push data to GTM
+        function sendToGTM() {
             let queryParams = getQueryParams();
 
             if (Object.keys(queryParams).length > 0) {
-                // Push to GTM only when triggered
                 window.dataLayer = window.dataLayer || [];
                 window.dataLayer.push({
                     'event': 'manual_trigger',
-                    ...queryParams  // Dynamically pass all key-value pairs
+                    ...queryParams
                 });
 
-                console.log("Data sent to GTM:", queryParams); // Debugging output
+                console.log("Data sent to GTM:", queryParams);
                 alert("Data sent to GTM! Check the console (F12) for details.");
             } else {
                 alert("No query parameters found to send to GTM.");
             }
         }
 
+        // Function to track phone number clicks in GTM
+        function trackPhoneClick(number) {
+            window.dataLayer = window.dataLayer || [];
+            window.dataLayer.push({
+                'event': 'phone_call',
+                'phone_number': number
+            });
+
+            console.log("Phone call event sent to GTM:", number);
+        }
+
         // Run display function on page load
         document.addEventListener("DOMContentLoaded", displayQueryParams);
-
-  </script>
-  
+    </script>
 </head>
 
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPZ9PM89"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-  <h1>Call the number below for customer support.</h1>
-<a href="tel:+5555555555" style="color: blue; font-weight:bold;">555-555-5555</a>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPZ9PM89"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <h1>Call the number below for customer support.</h1>
+    <a href="tel:+5555555555" style="color: blue; font-weight:bold;" onclick="trackPhoneClick('555-555-5555')">555-555-5555</a>
+
     <h1>Call the number below for a free quote!</h1>
-<a href="tel:+2222222222" style="color: blue; font-weight:bold;">222-222-2222</a>
- </body>
+    <a href="tel:+2222222222" style="color: blue; font-weight:bold;" onclick="trackPhoneClick('222-222-2222')">222-222-2222</a>
+
+    <h2>Captured Query Parameters:</h2>
+    <div id="queryParamsDisplay">
+        <p>Loading parameters...</p>
+    </div>
+
+    <button onclick="sendToGTM()">Send Data to GTM</button>
+</body>
+</html>
