@@ -1,38 +1,38 @@
 <!DOCTYPE HTML>
-  <html lang="en">
+<html lang="en">
 <head>
     <!-- Google Tag Manager -->
-  <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
-  new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
-  j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
-  'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
-  })(window,document,'script','dataLayer','GTM-NPZ9PM89');</script>
-  <!-- End Google Tag Manager -->
-  
-    <Meta charset="UTF-8">
+    <script>(function(w,d,s,l,i){w[l]=w[l]||[];w[l].push({'gtm.start':
+    new Date().getTime(),event:'gtm.js'});var f=d.getElementsByTagName(s)[0],
+    j=d.createElement(s),dl=l!='dataLayer'?'&l='+l:'';j.async=true;j.src=
+    'https://www.googletagmanager.com/gtm.js?id='+i+dl;f.parentNode.insertBefore(j,f);
+    })(window,document,'script','dataLayer','GTM-NPZ9PM89');</script>
+    <!-- End Google Tag Manager -->
+    
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Go to my support/sales page!</title>
-  
+    <title>Go to my support/sales page!</title>
+    
+    <script>
+      function preserveQueryParams() {
+          let params = new URLSearchParams(window.location.search);
+          let dynamicLink = document.getElementById("dynamicLink");
+
+          if (params.toString()) {
+              dynamicLink.href = "page_2.html?" + params.toString();
+          }
+      }
+
+      document.addEventListener("DOMContentLoaded", preserveQueryParams);
+    </script>
 </head>
 
-<script>
- function preserveQueryParams() {
-      let params = new URLSearchParams(window.location.search);
-      let dynamicLink = document.getElementById("dynamicLink");
-
-      if (params.toString()) {
-          dynamicLink.href = "page_2.html?" + params.toString();
-      }
-  }
-
-  document.addEventListener("DOMContentLoaded", preserveQueryParams);
-</script>
-
-    
 <body>
-  <!-- Google Tag Manager (noscript) -->
-<noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPZ9PM89"
-height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
-<!-- End Google Tag Manager (noscript) -->
-<a href="page_2.html" target="_blank">Click to go to my sales/support page!</a>
- </body>
+    <!-- Google Tag Manager (noscript) -->
+    <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPZ9PM89"
+    height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
+    <!-- End Google Tag Manager (noscript) -->
+    
+    <a id="dynamicLink" href="page_2.html" target="_blank">Click to go to my sales/support page!</a>
+</body>
+</html>
