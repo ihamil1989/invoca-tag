@@ -44,6 +44,24 @@
             }
         }
 
+  function sendToGTM() {
+            let queryParams = getQueryParams();
+
+            if (Object.keys(queryParams).length > 0) {
+                // Push to GTM only when triggered
+                window.dataLayer = window.dataLayer || [];
+                window.dataLayer.push({
+                    'event': 'manual_trigger',
+                    ...queryParams  // Dynamically pass all key-value pairs
+                });
+
+                console.log("Data sent to GTM:", queryParams); // Debugging output
+                alert("Data sent to GTM! Check the console (F12) for details.");
+            } else {
+                alert("No query parameters found to send to GTM.");
+            }
+        }
+
         // Run display function on page load
         document.addEventListener("DOMContentLoaded", displayQueryParams);
     </script>
