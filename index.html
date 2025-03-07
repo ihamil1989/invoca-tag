@@ -18,10 +18,14 @@
 <script>
  function preserveQueryParams() {
       let params = new URLSearchParams(window.location.search);
-      document.getElementById("dynamicLink").href = "page_2.html?" + params.toString();
+      let dynamicLink = document.getElementById("dynamicLink");
+
+      if (params.toString()) {
+          dynamicLink.href = "page_2.html?" + params.toString();
+      }
   }
 
-  window.onload = preserveQueryParams;
+  document.addEventListener("DOMContentLoaded", preserveQueryParams);
 </script>
 
     
