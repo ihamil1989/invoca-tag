@@ -12,6 +12,48 @@
     <Meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Call me!</title>
+  <script>
+    // Function to extract all URL parameters dynamically
+        function getQueryParams() {
+            let params = new URLSearchParams(window.location.search);
+            let queryParams = {};
+
+    // Loop through all parameters and store them in an object
+      params.forEach((value, key) => {
+          queryParams[key] = value;
+      });
+
+      return queryParams; // Returns an object with all key-value pairs
+        }
+    // Extract parameters and push to Google Tag Manager dataLayer
+        let queryParams = getQueryParams();
+
+        // Push all extracted parameters to GTM dataLayer
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            'event': 'page_visit',
+            ...queryParams  // Spread operator to add all params dynamically
+        });
+
+    // Function to display query parameters in the body as <p> tags
+        function displayQueryParams() {
+            let displayArea = document.getElementById("queryParamsDisplay");
+            displayArea.innerHTML = ""; // Clear any existing content
+            
+            if (Object.keys(queryParams).length > 0) {
+                Object.entries(queryParams).forEach(([key, value]) => {
+                    let p = document.createElement("p");
+                    p.textContent = `${key}: ${value}`;
+                    displayArea.appendChild(p);
+                });
+            } else {
+                displayArea.innerHTML = "<p><strong>No query parameters found.</strong></p>";
+            }
+        }
+          // Run display function on page load
+        window.onload = displayQueryParams;
+
+  </script>
   
 </head>
 
