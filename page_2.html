@@ -12,7 +12,10 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Call me!</title>
-    
+
+    <!-- Invoca Tag (If not already loaded via GTM or another method) -->
+    <script src="https://tag.invoca.net/your-invoca-id.js"></script>
+
     <script>
         // Function to extract query parameters from the URL
         function getQueryParams() {
@@ -23,7 +26,7 @@
                 queryParams[key] = value;
             });
 
-            return queryParams; // Returns all key-value pairs
+            return queryParams;
         }
 
         // Function to display query parameters on the page
@@ -31,7 +34,7 @@
             let queryParams = getQueryParams();
             let displayArea = document.getElementById("queryParamsDisplay");
 
-            displayArea.innerHTML = ""; // Clear previous content
+            displayArea.innerHTML = "";
 
             if (Object.keys(queryParams).length > 0) {
                 Object.entries(queryParams).forEach(([key, value]) => {
@@ -44,37 +47,40 @@
             }
         }
 
-        // Function to manually push data to GTM
-        function sendToGTM() {
-            let queryParams = getQueryParams();
+        // Function to track when a call is completed in Invoca
+        function trackInvocaCallCompletion() {
+            if (window.invocaTag && window.invocaTag.getCallData) {
+                window.invocaTag.getCallData(function(callData) {
+                    console.log("Call Completed:", callData);
 
-            if (Object.keys(queryParams).length > 0) {
-                window.dataLayer = window.dataLayer || [];
-                window.dataLayer.push({
-                    'event': 'manual_trigger',
-                    ...queryParams
+                    // Push call data to GTM
+                    window.dataLayer = window.dataLayer || [];
+                    window.dataLayer.push({
+                        'event': 'invoca_call_completed',
+                        'phone_number': callData.phone_number,
+                        'call_duration': callData.call_duration, // Duration in seconds
+                        'utm_medium': new URLSearchParams(window.location.search).get('utm_medium') || "unknown",
+                        'utm_source': new URLSearchParams(window.location.search).get('utm_source') || "unknown"
+                    });
+
+                    console.log("GTM Call Data Sent:", {
+                        'phone_number': callData.phone_number,
+                        'call_duration': callData.call_duration
+                    });
                 });
-
-                console.log("Data sent to GTM:", queryParams);
-                alert("Data sent to GTM! Check the console (F12) for details.");
             } else {
-                alert("No query parameters found to send to GTM.");
+                console.error("Invoca tag not found or call data unavailable.");
             }
         }
 
-        // Function to track phone number clicks in GTM
-        function trackPhoneClick(number) {
-            window.dataLayer = window.dataLayer || [];
-            window.dataLayer.push({
-                'event': 'phone_call',
-                'phone_number': number
-            });
+        // Listen for Invoca's call completion event
+        document.addEventListener("DOMContentLoaded", function() {
+            displayQueryParams();
 
-            console.log("Phone call event sent to GTM:", number);
-        }
-
-        // Run display function on page load
-        document.addEventListener("DOMContentLoaded", displayQueryParams);
+            if (window.invocaTag) {
+                window.invocaTag.on('call_completed', trackInvocaCallCompletion);
+            }
+        });
     </script>
 </head>
 
@@ -83,18 +89,16 @@
     <noscript><iframe src="https://www.googletagmanager.com/ns.html?id=GTM-NPZ9PM89"
     height="0" width="0" style="display:none;visibility:hidden"></iframe></noscript>
     <!-- End Google Tag Manager (noscript) -->
-    
+
     <h1>Call the number below for customer support.</h1>
-    <a href="tel:+5555555555" style="color: blue; font-weight:bold;" onclick="trackPhoneClick('555-555-5555')">555-555-5555</a>
+    <a href="tel:+5555555555" style="color: blue; font-weight:bold;">555-555-5555</a>
 
     <h1>Call the number below for a free quote!</h1>
-    <a href="tel:+2222222222" style="color: blue; font-weight:bold;" onclick="trackPhoneClick('222-222-2222')">222-222-2222</a>
+    <a href="tel:+2222222222" style="color: blue; font-weight:bold;">222-222-2222</a>
 
     <h2>Captured Query Parameters:</h2>
     <div id="queryParamsDisplay">
         <p>Loading parameters...</p>
     </div>
-
-    <button onclick="sendToGTM()">Send Data to GTM</button>
 </body>
 </html>
