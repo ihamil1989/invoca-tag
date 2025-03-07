@@ -16,15 +16,12 @@
 </head>
 
 <script>
-  // Function to preserve existing URL parameters
-function preserveQueryParams() {
-  let params = new URLSearchParams(window.location.search);
-  // Update the navigation link with preserved parameters
-  let queryString = params.toString();
-  document.getElementById("dynamicLink").href = "page_2.html?" + queryString;
-}
-   // Run function on page load
-    window.onload = preserveQueryParams;
+ function preserveQueryParams() {
+      let params = new URLSearchParams(window.location.search);
+      document.getElementById("dynamicLink").href = "page_2.html?" + params.toString();
+  }
+
+  window.onload = preserveQueryParams;
 </script>
 
     
