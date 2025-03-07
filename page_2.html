@@ -13,75 +13,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Call me!</title>
 
-    <!-- Invoca Tag (If not already loaded via GTM or another method) -->
-    <script src="https://tag.invoca.net/your-invoca-id.js"></script>
-
-    <script>
-        // Function to extract query parameters from the URL
-        function getQueryParams() {
-            let params = new URLSearchParams(window.location.search);
-            let queryParams = {};
-
-            params.forEach((value, key) => {
-                queryParams[key] = value;
-            });
-
-            return queryParams;
-        }
-
-        // Function to display query parameters on the page
-        function displayQueryParams() {
-            let queryParams = getQueryParams();
-            let displayArea = document.getElementById("queryParamsDisplay");
-
-            displayArea.innerHTML = "";
-
-            if (Object.keys(queryParams).length > 0) {
-                Object.entries(queryParams).forEach(([key, value]) => {
-                    let p = document.createElement("p");
-                    p.textContent = `${key}: ${value}`;
-                    displayArea.appendChild(p);
-                });
-            } else {
-                displayArea.innerHTML = "<p><strong>No query parameters found.</strong></p>";
-            }
-        }
-
-        // Function to track when a call is completed in Invoca
-        function trackInvocaCallCompletion() {
-            if (window.invocaTag && window.invocaTag.getCallData) {
-                window.invocaTag.getCallData(function(callData) {
-                    console.log("Call Completed:", callData);
-
-                    // Push call data to GTM
-                    window.dataLayer = window.dataLayer || [];
-                    window.dataLayer.push({
-                        'event': 'invoca_call_completed',
-                        'phone_number': callData.phone_number,
-                        'call_duration': callData.call_duration, // Duration in seconds
-                        'utm_medium': new URLSearchParams(window.location.search).get('utm_medium') || "unknown",
-                        'utm_source': new URLSearchParams(window.location.search).get('utm_source') || "unknown"
-                    });
-
-                    console.log("GTM Call Data Sent:", {
-                        'phone_number': callData.phone_number,
-                        'call_duration': callData.call_duration
-                    });
-                });
-            } else {
-                console.error("Invoca tag not found or call data unavailable.");
-            }
-        }
-
-        // Listen for Invoca's call completion event
-        document.addEventListener("DOMContentLoaded", function() {
-            displayQueryParams();
-
-            if (window.invocaTag) {
-                window.invocaTag.on('call_completed', trackInvocaCallCompletion);
-            }
-        });
-    </script>
+  
 </head>
 
 <body>
