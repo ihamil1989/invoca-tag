@@ -106,11 +106,16 @@
             submitBtn.innerText = 'Sending to Workato...';
             statusMessage.innerText = '';
 
+            // FIXED: Payload now wraps data elements beautifully inside the event_data object nested array
             const payload = {
-                name: document.getElementById('name').value,
-                email: document.getElementById('email').value,
-                phone: document.getElementById('phone').value,
-                sms_consent: document.getElementById('sms_consent').checked,
+                occurred_at: new Date().toISOString(),
+                external_id: "lead-" + Math.floor(Math.random() * 100000),
+                event_data: {
+                    phone_number: document.getElementById('phone').value,
+                    consumer_name: document.getElementById('name').value,
+                    email_address: document.getElementById('email').value,
+                    sms_consent: document.getElementById('sms_consent').checked.toString()
+                },
                 invoca_attribution_id: document.getElementById('invoca_attribution_id').value
             };
 
